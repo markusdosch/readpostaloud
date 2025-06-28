@@ -135,8 +135,6 @@
         <button class="menu-button pause-icon" aria-label="Pause"></button>
         <button class="menu-button stop-icon" aria-label="Stop"></button>
         <select class="language-select" aria-label="Select language">
-            <option value="en">English</option>
-            <option value="de">German</option>
         </select>
     </div>
     <div class="placeholder" style="height:40px"></div>
@@ -252,6 +250,7 @@ let isPaused = false;
   currentUtterance.pitch = 1;     // Pitch (0 to 2)
   currentUtterance.volume = 1;    // Volume (0 to 1)
   currentUtterance.lang = 'en-US'; // Language
+    currentUtterance.voice = getSelectedVoice();
   
   // Set up event listeners
   currentUtterance.onstart = function() {
@@ -347,6 +346,92 @@ function getSpeechState() {
     isPaused: isPaused,
     isSupported: 'speechSynthesis' in window
   };
+}
+
+function populateVoiceSelect() {
+    const selectElement = document.querySelector('.language-select');
+    
+    if (!selectElement) {
+        console.error('Select element with class "language-select" not found');
+        return;
+    }
+
+    // Check if Speech Synthesis is supported
+    if (!('speechSynthesis' in window)) {
+        console.error('Speech Synthesis not supported in this browser');
+        selectElement.innerHTML = '<option value="">Speech synthesis not supported</option>';
+        return;
+    }
+
+    function loadVoices() {
+        const voices = speechSynthesis.getVoices();
+        
+        if (voices.length === 0) {
+            console.warn('No voices available');
+            selectElement.innerHTML = '<option value="">No voices available</option>';
+            return;
+        }
+
+        // Clear existing options
+        selectElement.innerHTML = '';
+
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select a voice';
+        selectElement.appendChild(defaultOption);
+
+        // Add voice options
+        voices.forEach((voice, i) => {
+            const option = document.createElement('option');
+            option.value = i; // Use index as value
+            option.textContent = `${voice.name} (${voice.lang})`;
+            
+            // Add additional info as data attributes
+            option.dataset.voiceName = voice.name;
+            option.dataset.lang = voice.lang;
+            option.dataset.isDefault = voice.default;
+            option.dataset.isLocal = voice.localService;
+            
+            selectElement.appendChild(option);
+        });
+
+        console.log(`Loaded ${voices.length} voices`);
+    }
+
+    // Load voices immediately
+    loadVoices();
+
+    // Also listen for the voiceschanged event (some browsers load voices asynchronously)
+    speechSynthesis.addEventListener('voiceschanged', loadVoices);
+}
+
+document.addEventListener('DOMContentLoaded', populateVoiceSelect);
+
+function getSelectedVoice() {
+    const selectElement = document.querySelector('.language-select');
+    
+    if (!selectElement) {
+        console.error('Select element with class "language-select" not found');
+        return null;
+    }
+    
+    const selectedIndex = selectElement.value;
+    
+    if (!selectedIndex || selectedIndex === '') {
+        console.warn('No voice selected');
+        return null;
+    }
+    
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices[selectedIndex];
+    
+    if (!selectedVoice) {
+        console.error('Selected voice not found');
+        return null;
+    }
+    
+    return selectedVoice;
 }
     </script>
   </body>
