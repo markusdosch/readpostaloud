@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -249,7 +249,7 @@ let isPaused = false;
   currentUtterance.rate = 1;      // Speed (0.1 to 10)
   currentUtterance.pitch = 1;     // Pitch (0 to 2)
   currentUtterance.volume = 1;    // Volume (0 to 1)
-  currentUtterance.lang = 'en-US'; // Language
+  currentUtterance.lang = getSelectedVoice().lang; // Language
     currentUtterance.voice = getSelectedVoice();
   
   // Set up event listeners
@@ -375,12 +375,6 @@ function populateVoiceSelect() {
         // Clear existing options
         selectElement.innerHTML = '';
 
-        // Add default option
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Select a voice';
-        selectElement.appendChild(defaultOption);
-
         // Add voice options
         voices.forEach((voice, i) => {
             const option = document.createElement('option');
@@ -397,6 +391,8 @@ function populateVoiceSelect() {
         });
 
         console.log(`Loaded ${voices.length} voices`);
+        
+        selectElement.value = voices.findIndex(voice => voice.lang.startsWith(document.documentElement.lang));
     }
 
     // Load voices immediately
