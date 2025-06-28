@@ -197,21 +197,157 @@
       </p>
     </div>
     <script>
-        document.querySelector('.play-icon').addEventListener('click', function() {
-            console.log('Play button clicked');
-        });
+    let currentUtterance = null;
+let isReading = false;
+let isPaused = false;
+    
+        document.querySelector('.play-icon').addEventListener('click', readArticleAloud);
 
-        document.querySelector('.pause-icon').addEventListener('click', function() {
-            console.log('Pause button clicked');
-        });
+        document.querySelector('.pause-icon').addEventListener('click', pauseReading);
 
-        document.querySelector('.stop-icon').addEventListener('click', function() {
-            console.log('Stop button clicked');
-        });
+        document.querySelector('.stop-icon').addEventListener('click', stopReading);
 
         document.querySelector('.language-select').addEventListener('change', function() {
             console.log('Language changed to:', this.value);
         });
+        
+        function readArticleAloud() {
+  // Check if speech synthesis is supported
+  if (!('speechSynthesis' in window)) {
+    console.error('Speech synthesis not supported in this browser');
+    return;
+  }
+  
+  if (isReading && isPaused) {
+  resumeReading();
+  return;
+  }
+
+
+  if (isReading) {
+    return;
+  }
+  
+  // Get the article content element
+  const articleElement = document.querySelector('.article-content');
+  
+  if (!articleElement) {
+    console.error('Element with class "article-content" not found');
+    return;
+  }
+
+  // Get the text content
+  const textContent = articleElement.textContent || articleElement.innerText;
+  
+  if (!textContent.trim()) {
+    console.warn('No text content found to read');
+    return;
+  }
+
+  // Create a new SpeechSynthesisUtterance instance
+  currentUtterance = new SpeechSynthesisUtterance(textContent);
+  
+  // Configure the speech settings
+  currentUtterance.rate = 1;      // Speed (0.1 to 10)
+  currentUtterance.pitch = 1;     // Pitch (0 to 2)
+  currentUtterance.volume = 1;    // Volume (0 to 1)
+  currentUtterance.lang = 'en-US'; // Language
+  
+  // Set up event listeners
+  currentUtterance.onstart = function() {
+    isReading = true;
+    isPaused = false;
+    console.log('Speech started');
+  };
+  
+  currentUtterance.onend = function() {
+    isReading = false;
+    isPaused = false;
+    currentUtterance = null;
+    console.log('Speech ended');
+  };
+  
+  currentUtterance.onerror = function(event) {
+    console.error('Speech synthesis error:', event.error);
+    isReading = false;
+    isPaused = false;
+    currentUtterance = null;
+  };
+
+  // Start speaking
+  speechSynthesis.speak(currentUtterance);
+}
+
+/**
+ * Pauses the current speech synthesis
+ */
+function pauseReading() {
+  if (!('speechSynthesis' in window)) {
+    console.error('Speech synthesis not supported in this browser');
+    return;
+  }
+
+  if (isReading && !isPaused) {
+    speechSynthesis.pause();
+    isPaused = true;
+    console.log('Speech paused');
+  } else if (!isReading) {
+    console.warn('No speech is currently active to pause');
+  } else if (isPaused) {
+    console.warn('Speech is already paused');
+  }
+}
+
+/**
+ * Resumes the paused speech synthesis
+ */
+function resumeReading() {
+  if (!('speechSynthesis' in window)) {
+    console.error('Speech synthesis not supported in this browser');
+    return;
+  }
+
+  if (isReading && isPaused) {
+    speechSynthesis.resume();
+    isPaused = false;
+    console.log('Speech resumed');
+  } else if (!isReading) {
+    console.warn('No speech is currently active to resume');
+  } else if (!isPaused) {
+    console.warn('Speech is not paused');
+  }
+}
+
+/**
+ * Stops the current speech synthesis completely
+ */
+function stopReading() {
+  if (!('speechSynthesis' in window)) {
+    console.error('Speech synthesis not supported in this browser');
+    return;
+  }
+
+  if (isReading) {
+    speechSynthesis.cancel();
+    isReading = false;
+    isPaused = false;
+    currentUtterance = null;
+    console.log('Speech stopped');
+  } else {
+    console.warn('No speech is currently active to stop');
+  }
+}
+
+/**
+ * Gets the current state of the speech synthesis
+ */
+function getSpeechState() {
+  return {
+    isReading: isReading,
+    isPaused: isPaused,
+    isSupported: 'speechSynthesis' in window
+  };
+}
     </script>
   </body>
 </html>
