@@ -1,6 +1,6 @@
 (function addReadabilityScript() {
   console.log("init");
-  
+
   // Create and add the import map script
   const importMapScript = document.createElement('script');
   importMapScript.type = 'importmap';
@@ -13,8 +13,13 @@
   const moduleScript = document.createElement('script');
   moduleScript.type = 'module';
   moduleScript.textContent = `
+  console.log("before readability");
     import { Readability } from "@mozilla/readability";
+  console.log("readability imported");
+
     const article = new Readability(document).parse();
+
+  console.log("after readability");
     
     // Replace the complete HTML of the current page with the article content
     if (article && article.content) {
@@ -44,7 +49,7 @@
   `;
 
   console.log("before appendChild");
-  
+
   // Add both scripts to the document head
   document.head.appendChild(importMapScript);
   document.head.appendChild(moduleScript);
