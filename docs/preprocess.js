@@ -16,6 +16,8 @@
     
     // Replace the complete HTML of the current page with the article content
     if (article && article.content) {
+      console.log(article.content);
+      
       document.documentElement.innerHTML = \
         <!DOCTYPE html>
         <html>
@@ -23,27 +25,6 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>\${article.title || 'Article'}</title>
-          <style>
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              line-height: 1.6;
-              max-width: 800px;
-              margin: 0 auto;
-              padding: 20px;
-              color: #333;
-            }
-            h1, h2, h3, h4, h5, h6 {
-              color: #2c3e50;
-              margin-top: 1.5em;
-            }
-            p {
-              margin-bottom: 1em;
-            }
-            img {
-              max-width: 100%;
-              height: auto;
-            }
-          </style>
         </head>
         <body>
           <h1>\${article.title || ''}</h1>
