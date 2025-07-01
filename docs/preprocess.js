@@ -11,6 +11,7 @@ await clearHeadAndLoadCSS();
     'https://unpkg.com/@mozilla/readability@0.6.0/Readability.js');
     
     const article = new Readability(document).parse();
+    window.article = article;
 
     if (!article?.content) {
       console.error("Article could not be extracted");
