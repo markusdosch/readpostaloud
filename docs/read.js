@@ -1,4 +1,3 @@
-
 let currentUtterance = null;
 let isReading = false;
 let isPaused = false;
@@ -12,6 +11,8 @@ document.querySelector('.stop-icon').addEventListener('click', stopReading);
 document.querySelector('.language-select').addEventListener('change', function () {
     console.log('Language changed to:', this.value);
 });
+
+populateVoiceSelect();
 
 function readArticleAloud() {
     // Check if speech synthesis is supported
@@ -205,8 +206,6 @@ function populateVoiceSelect() {
     // Also listen for the voiceschanged event (some browsers load voices asynchronously)
     speechSynthesis.addEventListener('voiceschanged', loadVoices);
 }
-
-document.addEventListener('DOMContentLoaded', populateVoiceSelect);
 
 function getSelectedVoice() {
     const selectElement = document.querySelector('.language-select');
