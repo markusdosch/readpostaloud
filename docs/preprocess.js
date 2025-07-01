@@ -13,35 +13,7 @@
       return;
     }
 
-    document.documentElement.innerHTML = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${article.title || 'Article'}</title>
-          <link rel="stylesheet" href="https://readpostaloud.21solutions.de/styles.css"/>
-          <script type="text/javascript" src="https://readpostaloud.21solutions.de/read.js"></script>
-        </head>
-        <body>
-          <div class="pill-menu">
-            <button class="menu-button play-icon" aria-label="Play"></button>
-            <button class="menu-button pause-icon" aria-label="Pause"></button>
-            <button class="menu-button stop-icon" aria-label="Stop"></button>
-            <select class="language-select" aria-label="Select language"></select>
-          </div>
-          <div class="placeholder" style="height:40px"></div>
-          <h1>${article.title || ''}</h1>
-          <div class="article-meta">
-            ${article.byline ? '<p><strong>By:</strong> ' + article.byline + '</p>' : ''}
-            ${article.siteName ? '<p><strong>Source:</strong> ' + article.siteName + '</p>' : ''}
-          </div>
-          <div class="article-content">
-            ${article.content}
-          </div>
-        </body>
-        </html>
-      `;
+    console.log(article);
   };
 
   document.head.appendChild(s);
