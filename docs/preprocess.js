@@ -1,4 +1,6 @@
 (function addReadabilityScript() {
+  console.log("init");
+  
   // Create and add the import map script
   const importMapScript = document.createElement('script');
   importMapScript.type = 'importmap';
@@ -40,6 +42,9 @@
       \;
     }
   `;
+
+  console.log("before appendChild");
+  
   // Add both scripts to the document head
   document.head.appendChild(importMapScript);
   document.head.appendChild(moduleScript);
