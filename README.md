@@ -1,3 +1,3 @@
-# readpsotaloud
+# readpostaloud
 
-How to use: Add the contents of `bookmark.js` to a bookmark.
+See https://readpostaloud.21solutions.de
