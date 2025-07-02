@@ -2,6 +2,8 @@ let currentUtterance = null;
 let isReading = false;
 let isPaused = false;
 
+let currentParagraph = 0;
+
 document.querySelector('.play-icon').addEventListener('click', readArticleAloud);
 
 document.querySelector('.pause-icon').addEventListener('click', pauseReading);
@@ -48,7 +50,7 @@ function readArticleAloud() {
     }
 
     // Create a new SpeechSynthesisUtterance instance
-    currentUtterance = new SpeechSynthesisUtterance(textContent);
+    currentUtterance = new SpeechSynthesisUtterance();
 
     // Configure the speech settings
     currentUtterance.rate = 1;      // Speed (0.1 to 10)
@@ -77,6 +79,20 @@ function readArticleAloud() {
         isPaused = false;
         currentUtterance = null;
     };
+
+    currentUtterance.text = articleElement.children.item(currentParagraph).textContent || articleElement.children.item(currentParagraph).innerText;
+
+    currentUtterance.onend = function () {
+        currentParagraph++;
+
+        if (currentParagraph >= articleElement.children.length) {
+            return;
+        }
+
+        currentUtterance.text = articleElement.children.item(currentParagraph).textContent || articleElement.children.item(currentParagraph).innerText;
+
+        speechSynthesis.speak(currentUtterance);
+    }
 
     // Start speaking
     speechSynthesis.speak(currentUtterance);
