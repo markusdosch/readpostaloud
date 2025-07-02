@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>readpostaloud</title>
+    <title>ReadPostAloud - Listen to any web article</title>
     <style>
       /* LaTeX-inspired styling */
       body {
@@ -122,7 +122,7 @@
     </style>
   </head>
   <body>
-    <h1>readpostaloud</h1>
+    <h1>ReadPostAloud</h1>
 
     <div class="abstract">
       Transform any website post or article into an audio experience with this
@@ -132,13 +132,25 @@
     </div>
 
     <div class="section">
+      <form style="display: inline">
+        <button
+          class="copy-button"
+          formaction="./demo.html"
+          style="margin-left: 0.5rem; background: #2d5a27"
+        >
+          See live demo
+        </button>
+      </form>
+    </div>
+
+    <div class="section">
       <h2>Installation</h2>
       <div class="instructions">
         <ol>
           <li>Copy the bookmarklet code below</li>
           <li>Create a new bookmark in your browser</li>
           <li>Paste the code as the bookmark URL</li>
-          <li>Name it "readpostaloud" or any preferred name</li>
+          <li>Name it "ReadPostAloud" or any preferred name</li>
           <li>
             Click the bookmark on any webpage to start reading
             <a href="https://lucumr.pocoo.org/2025/6/10/genai-criticism/">
@@ -163,15 +175,6 @@ document.head.appendChild(s); })();
       <button class="copy-button" onclick="copyToClipboard()">
         Copy to Clipboard
       </button>
-      <form style="display: inline">
-        <button
-          class="copy-button"
-          formaction="./demo.html"
-          style="margin-left: 0.5rem; background: #2d5a27"
-        >
-          See live demo
-        </button>
-      </form>
     </div>
 
     <script>
