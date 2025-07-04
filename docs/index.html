@@ -165,13 +165,7 @@
     <div class="section">
       <h2>Bookmarklet Code</h2>
       <!-- prettier-ignore -->
-      <div class="code-block" id="bookmarklet-code">
-javascript: (function () { var s = document.createElement('script');
-s.src = ' https://readpostaloud.21solutions.de/preprocess.js'; s.type =
-'text/javascript'; s.onerror = function () { console.error('Failed to
-load preprocess.js'); }; s.onload = function () {
-console.log('preprocess.js loaded successfully'); };
-document.head.appendChild(s); })();</div>
+      <div class="code-block" id="bookmarklet-code">javascript: (function () { var s = document.createElement('script'); s.src = ' https://readpostaloud.21solutions.de/preprocess.js'; s.type = 'text/javascript'; s.onerror = function () { console.error('Failed to load preprocess.js'); }; s.onload = function () { console.log('preprocess.js loaded successfully'); }; document.head.appendChild(s); })();</div>
       <button class="copy-button" onclick="copyToClipboard()">
         Copy to Clipboard
       </button>
