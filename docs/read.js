@@ -2,7 +2,8 @@ let currentUtterance = null;
 let isReading = false;
 let isPaused = false;
 
-let currentParagraph = 0;
+let currentParagraph = -1;
+let articleElement = null;
 
 document.querySelector('.play-icon').addEventListener('click', readArticleAloud);
 
@@ -34,7 +35,7 @@ function readArticleAloud() {
     }
 
     // Get the article content element
-    const articleElement = document.querySelector('.article-content');
+    articleElement = document.querySelector('.article-content');
 
     if (!articleElement) {
         console.error('Element with class "article-content" not found');
@@ -80,9 +81,13 @@ function readArticleAloud() {
         currentUtterance = null;
     };
 
-    currentUtterance.text = articleElement.children.item(currentParagraph).textContent || articleElement.children.item(currentParagraph).innerText;
+    currentUtterance.onend = readNextParagraph();
 
-    currentUtterance.onend = function () {
+    // Start speaking
+    readNextParagraph();
+}
+
+function readNextParagraph() {
         currentParagraph++;
 
         if (currentParagraph >= articleElement.children.length) {
@@ -90,12 +95,8 @@ function readArticleAloud() {
         }
 
         currentUtterance.text = articleElement.children.item(currentParagraph).textContent || articleElement.children.item(currentParagraph).innerText;
-
-        speechSynthesis.speak(currentUtterance);
-    }
-
-    // Start speaking
-    speechSynthesis.speak(currentUtterance);
+        
+speechSynthesis.speak(currentUtterance);
 }
 
 /**
