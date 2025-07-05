@@ -2,8 +2,8 @@ let currentUtterance = null;
 let isReading = false;
 let isPaused = false;
 
+let paragraphLeafNodes = null;
 let currentParagraph = -1;
-let articleElement = null;
 
 document.querySelector('.play-icon').addEventListener('click', readArticleAloud);
 
@@ -35,7 +35,8 @@ function readArticleAloud() {
     }
 
     // Get the article content element
-    articleElement = document.querySelector('.article-content');
+    const articleElement = document.querySelector('.article-content');
+    paragraphLeafNodes = Array.from(articleElement.querySelectorAll('*')).filter(el => el.children.length === 0);
 
     if (!articleElement) {
         console.error('Element with class "article-content" not found');
@@ -81,7 +82,7 @@ function readArticleAloud() {
         currentUtterance = null;
     };
 
-    currentUtterance.onend = readNextParagraph();
+    currentUtterance.onend = readNextParagraph;
 
     // Start speaking
     readNextParagraph();
@@ -90,11 +91,17 @@ function readArticleAloud() {
 function readNextParagraph() {
         currentParagraph++;
 
-        if (currentParagraph >= articleElement.children.length) {
+        if (currentParagraph >= paragraphLeafNodes.length) {
             return;
         }
 
-        currentUtterance.text = articleElement.children.item(currentParagraph).textContent || articleElement.children.item(currentParagraph).innerText;
+        currentUtterance.text = paragraphLeafNodes[currentParagraph].textContent || paragraphLeafNodes[currentParagraph].innerText;
+        
+        paragraphLeafNodes[currentParagraph].style.backgroundColor = "#1111";
+    
+    if(currentParagraph > 0){
+        paragraphLeafNodes[currentParagraph-1].style.backgroundColor = "";
+    }
         
 speechSynthesis.speak(currentUtterance);
 }
@@ -153,6 +160,9 @@ function stopReading() {
         isReading = false;
         isPaused = false;
         currentUtterance = null;
+        currentParagraph = -1;
+        paragraphLeafNodes = null;
+        currentParagraph = -1;
         console.log('Speech stopped');
     } else {
         console.warn('No speech is currently active to stop');
