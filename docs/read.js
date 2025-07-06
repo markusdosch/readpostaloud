@@ -24,6 +24,8 @@ document.querySelector('.language-select').addEventListener('change', function (
 populateVoiceSelect();
 
 function skipForward() {
+    stopReading();
+
     if (currentParagraph === paragraphLeafNodes.length - 1) { return; }
 
     currentParagraph++;
@@ -32,6 +34,8 @@ function skipForward() {
 }
 
 function skipBack() {
+    stopReading();
+
     if (currentParagraph === 0) { return; }
 
     currentParagraph--;
