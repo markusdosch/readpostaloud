@@ -113,7 +113,21 @@ img {
   content: "⏸";
 }
 
+/* Skip back button icon */
+.skip-back-icon::before {
+  content: "⏮️";
+}
+
+/* Skip forward button icon */
+.skip-forward-icon::before {
+  content: "⏭️";
+}
+
 /* Stop button icon */
 .stop-icon::before {
   content: "⏹";
+}
+
+.paragraph-active {
+ background-color: #1111;
 }

@@ -2,8 +2,10 @@ let currentUtterance = null;
 let isReading = false;
 let isPaused = false;
 
-let paragraphLeafNodes = null;
-let currentParagraph = -1;
+const articleElement = document.querySelector('.article-content');
+const paragraphLeafNodes = Array.from(articleElement.querySelectorAll('*')).filter(el => el.children.length === 0);
+let currentParagraph = 0;
+paragraphLeafNodes[currentParagraph].classList.add("paragraph-active");
 
 document.querySelector('.play-icon').addEventListener('click', readArticleAloud);
 
@@ -11,11 +13,31 @@ document.querySelector('.pause-icon').addEventListener('click', pauseReading);
 
 document.querySelector('.stop-icon').addEventListener('click', stopReading);
 
+document.querySelector('.skip-back-icon').addEventListener('click', skipBack);
+
+document.querySelector('.skip-forward-icon').addEventListener('click', skipForward);
+
 document.querySelector('.language-select').addEventListener('change', function () {
     console.log('Language changed to:', this.value);
 });
 
 populateVoiceSelect();
+
+function skipForward() {
+if (currentParagraph === paragraphLeafNodes.length - 1 ) { return; }
+
+currentParagraph++;
+        document.querySelector(".paragraph-active")?.classList.remove("paragraph-active");
+paragraphLeafNodes[currentParagraph].classList.add("paragraph-active");
+}
+
+function skipBack() {
+if (currentParagraph === 0) { return; }
+
+currentParagraph--;
+        document.querySelector(".paragraph-active")?.classList.remove("paragraph-active");
+paragraphLeafNodes[currentParagraph].classList.add("paragraph-active");
+}
 
 function readArticleAloud() {
     // Check if speech synthesis is supported
@@ -29,17 +51,7 @@ function readArticleAloud() {
         return;
     }
 
-
     if (isReading) {
-        return;
-    }
-
-    // Get the article content element
-    const articleElement = document.querySelector('.article-content');
-    paragraphLeafNodes = Array.from(articleElement.querySelectorAll('*')).filter(el => el.children.length === 0);
-
-    if (!articleElement) {
-        console.error('Element with class "article-content" not found');
         return;
     }
 
@@ -89,21 +101,18 @@ function readArticleAloud() {
 }
 
 function readNextParagraph() {
-        currentParagraph++;
-
+        document.querySelector(".paragraph-active")?.classList.remove("paragraph-active");
+        
         if (currentParagraph >= paragraphLeafNodes.length) {
             return;
         }
+        
+paragraphLeafNodes[currentParagraph].classList.add("paragraph-active");
 
         currentUtterance.text = paragraphLeafNodes[currentParagraph].textContent || paragraphLeafNodes[currentParagraph].innerText;
         
-        paragraphLeafNodes[currentParagraph].style.backgroundColor = "#1111";
-    
-    if(currentParagraph > 0){
-        paragraphLeafNodes[currentParagraph-1].style.backgroundColor = "";
-    }
-        
 speechSynthesis.speak(currentUtterance);
+currentParagraph++;
 }
 
 /**
@@ -160,9 +169,9 @@ function stopReading() {
         isReading = false;
         isPaused = false;
         currentUtterance = null;
-        currentParagraph = -1;
-        paragraphLeafNodes = null;
-        currentParagraph = -1;
+        currentParagraph = 0; 
+        document.querySelector(".paragraph-active")?.classList.remove("paragraph-active");
+paragraphLeafNodes[currentParagraph].classList.add("paragraph-active");
         console.log('Speech stopped');
     } else {
         console.warn('No speech is currently active to stop');

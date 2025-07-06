@@ -24,8 +24,10 @@ async function init() {
   // Create the HTML structure with dynamic content
   const htmlStructure = `
     <div class="pill-menu">
+    <button class="menu-button skip-back-icon" aria-label="Skip back"></button>
         <button class="menu-button play-icon" aria-label="Play"></button>
         <button class="menu-button pause-icon" aria-label="Pause"></button>
+            <button class="menu-button skip-forward-icon" aria-label="Skip forward"></button>
         <button class="menu-button stop-icon" aria-label="Stop"></button>
         <select class="language-select" aria-label="Select language">
         </select>
