@@ -242,9 +242,6 @@ function populateVoiceSelect() {
 
     // Load voices immediately
     loadVoices();
-
-    // Also listen for the voiceschanged event (some browsers load voices asynchronously)
-    speechSynthesis.addEventListener('voiceschanged', loadVoices);
 }
 
 function getSelectedVoice() {
