@@ -237,7 +237,7 @@ function populateVoiceSelect() {
 
         console.log(`Loaded ${voices.length} voices`);
 
-        selectElement.value = voices.findIndex(voice => voice.lang.startsWith(window?.article?.lang || document.documentElement.lang));
+        selectElement.value = voices.findIndex(voice => voice.lang.startsWith(window?.article?.lang || document.documentElement.lang || "en-US"));
     }
 
     // Load voices immediately
