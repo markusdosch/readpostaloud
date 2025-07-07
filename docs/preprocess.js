@@ -1,3 +1,5 @@
+const scriptHost = (location.hostname === "localhost" || location.hostname === "127.0.0.1") ? "." : "https://readpostaloud.21solutions.de";
+
 init();
 
 async function init() {
@@ -7,8 +9,7 @@ async function init() {
 
   await clearHeadAndLoadCSS();
 
-  await loadScript(
-    'https://unpkg.com/@mozilla/readability@0.6.0/Readability.js');
+  await loadScript(`${scriptHost}/Readability.0.6.0.js`);
 
   const article = new Readability(document).parse();
   window.article = article;
@@ -43,7 +44,7 @@ async function init() {
   // Set the article content separately using innerHTML to handle HTML content
   document.querySelector('.article-content').innerHTML = article.content;
 
-  await loadScript('https://readpostaloud.21solutions.de/read.js');
+  await loadScript(`${scriptHost}/read.js`);
 
 }
 
@@ -87,7 +88,7 @@ async function clearHeadAndLoadCSS() {
   document.head.innerHTML = '';
 
   try {
-    const link = await loadStylesheet('https://readpostaloud.21solutions.de/styles.css');
+    const link = await loadStylesheet(`${scriptHost}/styles.css`);
     console.log('Stylesheet loaded successfully:', link.href);
   } catch (error) {
     console.error(error.message);
